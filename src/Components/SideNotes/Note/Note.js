@@ -25,8 +25,10 @@ const Note = ({ note }) => {
   return (
     <li className="txt-note-prev">
       <div className="bloc-note-left">
-        <p> {note.title}</p>
-        <p>{note.subtitle}</p>
+        <Link to={{ pathname: `/displaynote/${note.title}` }}>
+          <p> {note.title}</p>
+          <p>{note.subtitle}</p>
+        </Link>
       </div>
       <div className="bloc-note-right">
         <button onClick={deleteNote}>
