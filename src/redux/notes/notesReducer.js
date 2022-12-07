@@ -25,6 +25,16 @@ const INITIAL_STATE = {
 
 export default function notesReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case "DELETENOTE": {
+      const newNotesArr = [...state.notes].filter(
+        (note) => note.id !== action.payload
+      );
+      return {
+        notes: newNotesArr,
+      };
+    }
+    default: {
+    }
   }
   return state;
 }
