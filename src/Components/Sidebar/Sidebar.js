@@ -47,16 +47,16 @@ const Sidebar = () => {
             <div className="dot-nav d-green"></div>
           </div>
           <ul>
-            {/* <Link to="/"> */}
-            <li>
-              <img src={FolderIcon} alt="logo folder" />
-            </li>
-            {/* </Link> */}
-            {/* <Link to="/edit"> */}
-            <li>
-              <img src={LogoEdit} alt="logo edit" />
-            </li>
-            {/* </Link> */}
+            <Link to="/">
+              <li>
+                <img src={FolderIcon} alt="logo folder" />
+              </li>
+            </Link>
+            <Link to="/edit">
+              <li>
+                <img src={LogoEdit} alt="logo edit" />
+              </li>
+            </Link>
 
             <li>
               <img src={Tools} alt="logo tools" />
