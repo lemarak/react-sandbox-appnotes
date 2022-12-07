@@ -9,7 +9,7 @@ function App() {
       <Sidebar />
       <Switch>
         <Route exact path="/" component={ListNotes} />
-        <Route path="/edit" component={MainArea} />
+        <Route exact path="/edit" component={MainArea} />
       </Switch>
     </Router>
   );

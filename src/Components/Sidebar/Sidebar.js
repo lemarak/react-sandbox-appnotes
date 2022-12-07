@@ -7,6 +7,7 @@ import Menu from "./ImgsSidebar/menu.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import SideNotes from "../SideNotes/SideNotes";
 
 const Sidebar = () => {
   const [checkWidth, setCheckWidth] = useState(window.innerWidth);
@@ -63,6 +64,7 @@ const Sidebar = () => {
             </li>
           </ul>
         </div>
+        <SideNotes />
       </nav>
     </>
   );
