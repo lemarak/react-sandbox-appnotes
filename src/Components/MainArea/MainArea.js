@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import "./MainArea.css";
@@ -11,45 +10,75 @@ const MainArea = () => {
     subtitle: "",
     body: "",
   });
+  const [inpModify, setInpModify] = useState({
+    title: "",
+    subtitle: "",
+    body: "",
+    toggle: true,
+  });
   const [validation, setValidation] = useState(true);
   const dispatch = useDispatch();
-  const allInp = useRef([]);
 
-  const addInp = (el) => {
-    if (el && !allInp.current.includes(el)) {
-      allInp.current.push(el);
-    }
-  };
+  const selected = useSelector((state) => state.selectedReducer.selectedNote);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setInpModify(selected);
+  }, [selected]);
 
   const updateInputs = (e) => {
     const actualInp = e.target.getAttribute("id");
-    const newObjState = { ...inpInfo, [actualInp]: e.target.value };
-    setInpInfos(newObjState);
+    if (selected.toggle) {
+      const newObjState = { ...inpModify, [actualInp]: e.target.value };
+      setInpModify(newObjState);
+    } else {
+      const newObjState = { ...inpInfo, [actualInp]: e.target.value };
+      setInpInfos(newObjState);
+    }
   };
 
   const handleForm = (e) => {
     e.preventDefault();
-    if (inpInfo.title.length < 1) {
-      setValidation(false);
-      return;
+
+    if (selected.toggle) {
+      if (inpModify.title.length < 1) {
+        setValidation(false);
+        return;
+      }
+      setValidation(true);
+      dispatch({
+        type: "UPDATENOTE",
+        payload: {
+          ...inpModify,
+        },
+      });
+      dispatch({
+        type: "RESETNOTE",
+      });
+      setInpModify({
+        title: "",
+        subtitle: "",
+        body: "",
+      });
+    } else {
+      if (inpInfo.title.length < 1) {
+        setValidation(false);
+        return;
+      }
+      setValidation(true);
+      dispatch({
+        type: "ADDNOTE",
+        payload: {
+          ...inpInfo,
+          id: uuidv4(),
+        },
+      });
+
+      setInpInfos({
+        title: "",
+        subtitle: "",
+        body: "",
+      });
     }
-
-    setValidation(true);
-    dispatch({
-      type: "ADDNOTE",
-      payload: {
-        ...inpInfo,
-        id: uuidv4(),
-      },
-    });
-
-    setInpInfos({
-      title: "",
-      subtitle: "",
-      body: "",
-    });
   };
 
   return (
@@ -59,8 +88,7 @@ const MainArea = () => {
         <label htmlFor="title">Le Titre</label>
         <input
           onChange={updateInputs}
-          value={inpInfo.title}
-          ref={addInp}
+          value={inpModify.toggle ? inpModify.title : inpInfo.title}
           type="text"
           id="title"
         />
@@ -71,8 +99,7 @@ const MainArea = () => {
         <label htmlFor="subtitle">Le Sous-Titre</label>
         <input
           onChange={updateInputs}
-          value={inpInfo.subtitle}
-          ref={addInp}
+          value={inpModify.toggle ? inpModify.subtitle : inpInfo.subtitle}
           type="text"
           id="subtitle"
         />
@@ -80,8 +107,7 @@ const MainArea = () => {
         <label htmlFor="txtbody">Votre texte</label>
         <textarea
           onChange={updateInputs}
-          value={inpInfo.body}
-          ref={addInp}
+          value={inpModify.toggle ? inpModify.body : inpInfo.body}
           id="body"
           placeholder="Votre texte..."
         ></textarea>

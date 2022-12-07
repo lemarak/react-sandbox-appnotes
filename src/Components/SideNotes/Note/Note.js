@@ -3,6 +3,7 @@ import "./Note.css";
 import RemoveIcon from "./remove.svg";
 import EditIcon from "./edit.svg";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Note = ({ note }) => {
   const dispatch = useDispatch();
@@ -11,6 +12,13 @@ const Note = ({ note }) => {
     dispatch({
       type: "DELETENOTE",
       payload: note.id,
+    });
+  };
+
+  const editNote = () => {
+    dispatch({
+      type: "SEENOTE",
+      payload: note,
     });
   };
 
@@ -24,11 +32,11 @@ const Note = ({ note }) => {
         <button onClick={deleteNote}>
           <img src={RemoveIcon} alt="remove icon" />
         </button>
-        <button
-        // onClick={editNote}
-        >
-          <img src={EditIcon} alt="edit icon" />
-        </button>
+        <Link to="/edit">
+          <button onClick={editNote}>
+            <img src={EditIcon} alt="edit icon" />
+          </button>
+        </Link>
       </div>
     </li>
   );
